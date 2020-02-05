@@ -27,7 +27,11 @@ namespace SIS.MvcFramework
 
             Console.WriteLine();
             Console.WriteLine("Requests:");
+
+            //HttpServer receives the filled with route-actions routeTable
             var httpServer = new HttpServer(80, routeTable);
+
+            //HttpServer manage the request and returns response
             await httpServer.StartAsync();
         }
 
@@ -62,6 +66,7 @@ namespace SIS.MvcFramework
                         }
                     }
 
+                    //Here we have current request, so we give it to controller
                     routeTable.Add(new Route(httpActionType, url, (request) =>
                     {
                         var controller = Activator.CreateInstance(type) as Controller;
@@ -80,6 +85,8 @@ namespace SIS.MvcFramework
             foreach (var staticFile in staticFiles)
             {
                 var path = staticFile.Replace("wwwroot", string.Empty).Replace("\\", "/");
+
+                //Here we have current request
                 routeTable.Add(new Route(HttpMethodType.Get, path, (request) =>
                 {
                     var fileInfo = new FileInfo(staticFile);

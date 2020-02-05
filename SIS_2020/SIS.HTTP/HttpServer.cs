@@ -84,6 +84,7 @@
 
                 Console.WriteLine($"{request.Method} {request.Path}");
 
+                //We have filled route table from constructor
                 var route = this.routeTable.FirstOrDefault(
                     x => x.HttpMethod == request.Method && string.Compare(x.Path, request.Path, true) == 0);
                 HttpResponse response;
@@ -93,6 +94,7 @@
                 }
                 else
                 {
+                    //This is the place where we give the data from route and from current request to the controller to return the response in view
                     response = route.Action(request);
                 }
 

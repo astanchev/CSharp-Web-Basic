@@ -11,6 +11,7 @@ namespace SIS.MvcFramework
 {
     public abstract class Controller
     {
+        //we receive request from routeTable in WebHost => AutoRegisterActionRoutes => routeTable.Add
         public HttpRequest Request { get; set; }
 
         protected HttpResponse View<T>(T viewModel = null, [CallerMemberName]string viewName = null)

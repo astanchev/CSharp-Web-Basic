@@ -34,14 +34,14 @@ namespace SIS.MvcFramework.Tests
             var viewModel = new List<int> { 1, 2, 3 };
 
             var viewContent = @"
-                @foreach (var num in Model)
-                {
-                    <p>@num</p>
-                }";
+@foreach (var num in Model)
+{
+<p>@num</p>
+}";
             var expectedResultContent = @"
-                    <p>1</p>
-                    <p>2</p>
-                    <p>3</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
 ";
 
             IViewEngine viewEngine = new ViewEngine();

@@ -38,8 +38,6 @@
         /// <summary>
         /// Routing function that receives <see cref="HttpRequest"/> and returns <see cref="HttpResponse"/>.
         /// </summary>
-        
-        //We receive the request from HttpServer => ProcessClientAsync => response = route.Action(request);
         public Func<HttpRequest, HttpResponse> Action { get; set; }
 
         public override string ToString()

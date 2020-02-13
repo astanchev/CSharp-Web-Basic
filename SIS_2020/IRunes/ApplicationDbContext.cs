@@ -10,7 +10,7 @@ namespace IRunes
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=.;Database=IRunes;Integrated Security=True;");
+            optionsBuilder.UseSqlServer(DataSettings.Connection);
         }
 
         public DbSet<User> Users { get; set; }

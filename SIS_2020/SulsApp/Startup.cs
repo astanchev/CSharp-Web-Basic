@@ -14,12 +14,14 @@ namespace SulsApp
         {
             serviceCollection.Add<IUsersService, UsersService>();
             serviceCollection.Add<IProblemsService, ProblemsService>();
+            serviceCollection.Add<ISubmissionsService, SubmissionsService>();
         }
 
         public void Configure(IList<Route> routeTable)
         {
             var db = new ApplicationDbContext();
-            db.Database.Migrate();
+            //db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
         }
     }
 }

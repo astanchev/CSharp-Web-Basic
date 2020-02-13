@@ -7,7 +7,7 @@ namespace SulsApp
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=.;Database=SulsApp;Integrated Security=True;");
+            optionsBuilder.UseSqlServer(DataSettings.Connection);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

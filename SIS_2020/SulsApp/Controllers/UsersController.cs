@@ -1,19 +1,12 @@
-﻿using SIS.HTTP;
-using SIS.HTTP.Logging;
-using SIS.HTTP.Response;
-using SIS.MvcFramework;
-using SulsApp.Models;
-using SulsApp.Services;
-using SulsApp.ViewModels.Users;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Mail;
-using System.Security.Cryptography;
-
-namespace SulsApp.Controllers
+﻿namespace SulsApp.Controllers
 {
+    using SIS.HTTP;
+    using SIS.HTTP.Logging;
+    using SIS.MvcFramework;
+    using Services;
+    using ViewModels.Users;
+    using System;
+    using System.Net.Mail;
     public class UsersController : Controller
     {
         private IUsersService usersService;
@@ -27,6 +20,11 @@ namespace SulsApp.Controllers
 
         public HttpResponse Login()
         {
+            if (this.IsUserLoggedIn())
+            {
+                return this.Redirect("/");
+            }
+
             return this.View();
         }
 
@@ -46,6 +44,11 @@ namespace SulsApp.Controllers
 
         public HttpResponse Register()
         {
+            if (this.IsUserLoggedIn())
+            {
+                return this.Error("You are already registered.");
+            }
+
             return this.View();
         }
 

@@ -1,16 +1,17 @@
-﻿using SIS.HTTP;
-using SIS.MvcFramework;
-using SulsApp.Services;
-
-namespace SulsApp.Controllers
+﻿namespace SulsApp.Controllers
 {
+    using SIS.HTTP;
+    using SIS.MvcFramework;
+    using Services;
     public class ProblemsController : Controller
     {
         private readonly IProblemsService problemsService;
+        private readonly ApplicationDbContext db;
 
-        public ProblemsController(IProblemsService problemsService)
+        public ProblemsController(IProblemsService problemsService, ApplicationDbContext db)
         {
             this.problemsService = problemsService;
+            this.db = db;
         }
 
         public HttpResponse Create()
@@ -43,6 +44,18 @@ namespace SulsApp.Controllers
 
             this.problemsService.CreateProblem(name, points);
             return this.Redirect("/");
+        }
+
+        public HttpResponse Details(string id)
+        {
+            if (!this.IsUserLoggedIn())
+            {
+                return this.Redirect("/Users/Login");
+            }
+
+            var viewModel = this.problemsService.GetProblemDetails(id);
+
+            return this.View(viewModel);
         }
     }
 }

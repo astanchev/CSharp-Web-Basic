@@ -16,6 +16,11 @@
 
         public HttpResponse Login()
         {
+            if (this.IsUserLoggedIn())
+            {
+                return this.Redirect("/");
+            } 
+
             return this.View();
         }
 
@@ -23,6 +28,11 @@
         [HttpPost]
         public HttpResponse Login(string username, string password)
         {
+            if (this.IsUserLoggedIn())
+            {
+                return this.Redirect("/");
+            }
+
             var userId = this.usersesService.GetUserId(username, password);
             if (userId == null)
             {
@@ -35,12 +45,22 @@
 
         public HttpResponse Register()
         {
+            if (this.IsUserLoggedIn())
+            {
+                return this.Redirect("/");
+            }
+
             return this.View();
         }
 
         [HttpPost]
         public HttpResponse Register(RegisterInputModel input)
         {
+            if (this.IsUserLoggedIn())
+            {
+                return this.Redirect("/");
+            }
+
             if (input.Password != input.ConfirmPassword)
             {
                 return this.Redirect("/Users/Register");

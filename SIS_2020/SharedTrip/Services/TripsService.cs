@@ -96,8 +96,15 @@
                 Trip = tripFromDb
             };
 
+            tripFromDb.Seats--;
+
             this.db.UserTrips.Add(ut);
             this.db.SaveChanges();
+        }
+
+        public int GetFreeSeats(string tripId)
+        {
+            return this.db.Trips.First(t => t.Id == tripId).Seats;
         }
     }
 }

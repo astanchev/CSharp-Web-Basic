@@ -13,5 +13,7 @@
 
         bool ContainsUser(string userId, string tripId);
         void AddUser(string userId, string tripId);
+
+        int GetFreeSeats(string tripId);
     }
 }

@@ -101,6 +101,11 @@
                 return this.Details(tripId);
             }
 
+            if (this.tripsService.GetFreeSeats(tripId) == 0)
+            {
+                return this.Details(tripId);
+            }
+
             this.tripsService.AddUser(this.User, tripId);
 
             return this.Redirect("/Trips/All");

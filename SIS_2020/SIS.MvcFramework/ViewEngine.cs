@@ -76,12 +76,14 @@ namespace AppViewNamespace
                 .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
                 .AddReferences(MetadataReference.CreateFromFile(typeof(IView).Assembly.Location))
                 .AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location));
+
             if (model != null)
             {
                 compilation = compilation.AddReferences(MetadataReference.CreateFromFile(model.GetType().Assembly.Location));
             }
 
             var libraries = Assembly.Load(new AssemblyName("netstandard")).GetReferencedAssemblies();
+
             foreach (var library in libraries)
             {
                 compilation = compilation.AddReferences(
@@ -93,6 +95,7 @@ namespace AppViewNamespace
             using var memoryStream = new MemoryStream();
 
             var compilationResult = compilation.Emit(memoryStream);
+
             if (!compilationResult.Success)
             {
                 return new ErrorView(
@@ -106,6 +109,7 @@ namespace AppViewNamespace
             var assembly = Assembly.Load(assemblyByteArray);
             var type = assembly.GetType("AppViewNamespace.AppViewCode");
             var instance = Activator.CreateInstance(type) as IView;
+
             return instance;
         }
 
@@ -116,6 +120,7 @@ namespace AppViewNamespace
             StringBuilder cSharpCode = new StringBuilder();
             StringReader reader = new StringReader(templateHtml);
             string line;
+
             while ((line = reader.ReadLine()) != null)
             {
                 if (line.TrimStart().StartsWith("{")

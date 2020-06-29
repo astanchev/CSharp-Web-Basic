@@ -26,6 +26,7 @@ namespace SIS.MvcFramework
             
             var logger = serviceCollection.CreateInstance<ILogger>();
             logger.Log("Registered routes:");
+
             foreach (var route in routeTable)
             {
                 logger.Log(route.ToString());
@@ -33,7 +34,9 @@ namespace SIS.MvcFramework
 
             logger.Log(string.Empty);
             logger.Log("Requests:");
+
             var httpServer = new HttpServer(80, routeTable, logger);
+
             await httpServer.StartAsync();
         }
 
@@ -42,6 +45,7 @@ namespace SIS.MvcFramework
         {
             var controllers = application.GetType().Assembly.GetTypes()
                 .Where(type => type.IsSubclassOf(typeof(Controller)) && !type.IsAbstract);
+
             foreach (var controller in controllers)
             {
                 var actions = controller.GetMethods()
@@ -49,6 +53,7 @@ namespace SIS.MvcFramework
                     && !x.IsConstructor
                     && x.IsPublic
                     && x.DeclaringType == controller);
+
                 foreach (var action in actions)
                 {
                     string url = "/" + controller.Name.Replace("Controller", string.Empty) + "/" + action.Name;
@@ -58,6 +63,7 @@ namespace SIS.MvcFramework
                         .IsSubclassOf(typeof(HttpMethodAttribute)))
                          as HttpMethodAttribute;
                     var httpActionType = HttpMethodType.Get;
+
                     if (attribute != null)
                     {
                         httpActionType = attribute.Type;
@@ -79,12 +85,15 @@ namespace SIS.MvcFramework
 
             var actionParameterValues = new List<object>();
             var actionParameters = actionMethod.GetParameters();
+
             foreach (var parameter in actionParameters)
             {
                 var value = Convert.ChangeType(GetValueFromRequest(request, parameter.Name), parameter.ParameterType);
+
                 if (value == null && parameter.ParameterType != typeof(string))
                 {
                     var parameterValue = Activator.CreateInstance(parameter.ParameterType);
+
                     foreach (var property in parameter.ParameterType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
                     {
                         var propertyValue = GetValueFromRequest(request, property.Name);
@@ -107,6 +116,7 @@ namespace SIS.MvcFramework
         {
             object value = null;
             parameterName = parameterName.ToLower();
+
             if (request.QueryData.Any(x => x.Key.ToLower() == parameterName))
             {
                 value = request.QueryData
@@ -124,6 +134,7 @@ namespace SIS.MvcFramework
         private static void AutoRegisterStaticFilesRoutes(IList<Route> routeTable)
         {
             var staticFiles = Directory.GetFiles("wwwroot", "*", SearchOption.AllDirectories);
+
             foreach (var staticFile in staticFiles)
             {
                 var path = staticFile.Replace("wwwroot", string.Empty).Replace("\\", "/");
